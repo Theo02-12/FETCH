@@ -1,39 +1,41 @@
-const userText = fetch("http://localhost:1337/api/articles/?populate=*");
-const textContent = document.querySelector('#contenu');
-const textContentUser2 = document.querySelector('#contenu2');
+fetch('http://localhost:8082/api/articles/?populate=*')
+.then(res => res.json())
+.then((data)=>{
+
+    const container = document.querySelector('#container')
+    data.data.forEach(articles => {
 
 
+        const productImg = articles.attributes.image.data.attributes.url
+        const productTitle = articles.attributes.titre
 
 
-userText.then((response) =>{
-    const userData = response.json(); 
-    
-    userData.then((pictures) =>{
-    console.log((pictures).data ['1']);
+        const myH1 = document.createElement('h1')
 
-    const titreText = pictures.data['0'].attributes.titre;
-    console.log(titreText)
-    textContent.innerHTML = titreText;
-    
-    var img = new Image();
-    img.src = "http://localhost:1337" + pictures.data ['0'].attributes.image.data ['0'].attributes.url;
+        var img = new Image()
+        img.src = "http://localhost:8082" + productImg
 
-    var block = document.querySelector('#test');
-    block.appendChild(img);
-    console.log(img)
-    
-    
-    const textUser2 = pictures.data ['1'].attributes.titre;
-    console.log(textUser2)
-    textContentUser2.innerHTML = textUser2;
+        myH1.append(productTitle)
+        container.append(myH1, img)
+        
+        const size = ['S', 'M', 'L']
+        
+        const selectSize = document.createElement('select')
+        
+        size.forEach(taille =>{
 
-    var img2 = new Image();
-    img2.src = "http://localhost:1337" + pictures.data ['1'].attributes.image.data ['0'].attributes.url;
+        
+        const option = document.createElement('option') 
+        option.value = taille;
+        option.text = taille;
 
-    var block2 = document.querySelector('#test2');
-    block2.appendChild(img2);
+        
+        selectSize.appendChild(option)
+        container.append(selectSize)
+        console.log(option)
+        })
+        
 
-    
-    
-})
+      
+    });
 })
